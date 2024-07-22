@@ -1,11 +1,26 @@
 #!/usr/bin/env python3
-"""
-This module contains a Server class for paginating a database of popular baby names.
-"""
+""" 1-simple_pagination module """
 
 import csv
+import math
 from typing import List, Tuple
-from 0-simple_helper_function import index_range
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """
+    Returns a tuple of size two containing a start index and an end index
+    corresponding to the range of indexes to return in a list for those
+    particular pagination parameters.
+    Args:
+        page - page number
+        page_size - page size
+    Return:
+        tuple
+    """
+    start = (page - 1) * page_size
+    end = start + page_size
+    return start, end
+
 
 class Server:
     """Server class to paginate a database of popular baby names.
@@ -28,10 +43,18 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
-        Get a page from the dataset.
+        Given a page number and page size,
+        returns the right page of the dataset
+        Args:
+            page - page
+            page_size - size of page
+        Return:
+            right page of the dataset, empty list if out of range
         """
-        assert isinstance(page, int) and page > 0
-        assert isinstance(page_size, int) and page_size > 0
+        assert isinstance(page, int) and isinstance(page_size, int), \
+            "Both page and page_size must be integers."
+        assert page > 0 and page_size > 0, \
+            "Both page and page_size must be greater than 0."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
